@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>콜봇 프로토타입</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>관리사무소 연락처 수집 콜봇 <small>프로토타입</small></h1>
+  <div id="providers" class="providers"></div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="call" class="active">① 작업 · 통화 테스트</button>
+  <button data-tab="results">② 결과</button>
+  <button data-tab="template">③ 대화 템플릿</button>
+  <button data-tab="voice">④ 목소리</button>
+</nav>
+
+<main>
+  <!-- 작업 + 통화 -->
+  <section id="tab-call" class="tab active">
+    <div class="grid">
+      <div class="card">
+        <h2>발신 작업 만들기</h2>
+        <form id="job-form">
+          <label>요청자 이름 <input name="requester_name" required value="홍길동"></label>
+          <label>건물명 <input name="building_name" required value="예시빌딩"></label>
+          <label>건물 주소 <input name="building_address" required value="서울시 중구 예시로 1"></label>
+          <label>전화할 곳 이름 <input name="recipient_name" value="예시부동산"></label>
+          <label>전화할 번호 <input name="recipient_number" required value="02-000-0000"></label>
+          <label>문의 목적 <input name="inquiry_purpose" required value="상가 임대 문의"></label>
+          <label>목소리 <select name="voice_id" id="job-voice"><option value="">기본 음성</option></select></label>
+          <button type="submit">작업 추가</button>
+        </form>
+        <h3>작업 목록</h3>
+        <div id="jobs"></div>
+      </div>
+
+      <div class="card">
+        <h2>통화 <span id="call-stage" class="badge">대기</span></h2>
+        <p class="hint">
+          시뮬레이터: 내가 <b>전화 받는 점포 직원</b> 역할로 입력합니다.
+          🎤 버튼은 브라우저 음성 인식(Chrome, 무료)을 사용하고, 봇 음성이 나오는 중 말하면 재생을 멈춥니다(말 끊기).
+        </p>
+        <div id="chat" class="chat"></div>
+        <form id="say-form" class="say">
+          <input id="say-input" placeholder="예) 공이, 일이삼사에 오육칠팔이요" autocomplete="off" disabled>
+          <button type="submit" disabled>보내기</button>
+          <button type="button" id="mic" disabled title="음성으로 말하기">🎤</button>
+        </form>
+        <div class="row">
+          <button id="btn-silence" disabled>무응답(침묵)</button>
+          <button id="btn-hangup" class="danger" disabled>상대가 끊음</button>
+          <label class="inline"><input type="checkbox" id="speak" checked> 봇 음성 재생</label>
+        </div>
+        <div class="quick">
+          <b>빠른 입력:</b>
+          <button class="q">어느 건물이요?</button>
+          <button class="q">공이, 일이삼사에 오육칠팔이요</button>
+          <button class="q">네, 맞아요</button>
+          <button class="q">마지막은 팔이 아니라 구예요</button>
+          <button class="q">일이삼사 오육칠팔이요</button>
+          <button class="q">공이요</button>
+          <button class="q">부동산은 031-111-2222고 관리사무소는 031-333-4444예요</button>
+          <button class="q">잘 모르겠는데요</button>
+          <button class="q">지금 바빠서 나중에 전화 주세요</button>
+          <button class="q">다시는 전화하지 마세요</button>
+        </div>
+        <h3>번호 후보</h3>
+        <div id="contacts"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <section id="tab-results" class="tab">
+    <div class="card">
+      <h2>통화 결과 <a class="btn" href="/api/results.csv">CSV 다운로드</a> <a class="btn" href="/api/results.csv?only_confirmed=true">확인된 번호만 CSV</a></h2>
+      <table id="results">
+        <thead><tr><th>시각</th><th>건물</th><th>정보 제공처</th><th>확보 번호</th><th>확인 상태</th><th>결과</th><th>검토</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card" id="detail" hidden>
+      <h2>대화 근거 <span id="detail-id" class="muted"></span></h2>
+      <div id="detail-body"></div>
+    </div>
+  </section>
+
+  <!-- 템플릿 -->
+  <section id="tab-template" class="tab">
+    <div class="card">
+      <h2>대화 템플릿 <span id="tpl-version" class="badge"></span></h2>
+      <p class="hint">저장하면 새 버전이 만들어지고, 이후 통화부터 적용됩니다. 변수: <code id="tpl-vars"></code><br>
+        <b>시스템 고정 규칙</b>: 번호 낭독 문구에는 <code>{phone_spoken}</code> 필수(숫자는 서버가 읽음), 첫 인사에는 AI 대리 통화 안내 필수.</p>
+      <label>LLM 역할·말투 지시문 (persona_prompt)
+        <textarea id="tpl-persona" rows="10"></textarea></label>
+      <h3>고정 문구</h3>
+      <div id="tpl-phrases"></div>
+      <button id="tpl-save">새 버전으로 저장</button>
+      <span id="tpl-msg"></span>
+    </div>
+  </section>
+
+  <!-- 목소리 -->
+  <section id="tab-voice" class="tab">
+    <div class="card">
+      <h2>본인 목소리 등록</h2>
+      <p class="hint" id="voice-hint"></p>
+      <form id="voice-form">
+        <label>이름 <input name="name" required value="내 목소리"></label>
+        <label>녹음 파일 (조용한 곳에서 1~2분, 평소 전화 말투) <input type="file" name="file" accept="audio/*" required></label>
+        <label class="inline"><input type="checkbox" name="consent" value="true" required> 본인 목소리이며 음성 합성에 사용하는 데 동의합니다</label>
+        <button type="submit">등록</button>
+      </form>
+      <h3>등록된 목소리</h3>
+      <div id="voices"></div>
+      <label>미리 듣기 문장 <input id="preview-text" value="안녕하세요. 공 이, 일 이 삼 사, 오 육 칠 팔, 관리사무소 번호가 맞을까요?"></label>
+    </div>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

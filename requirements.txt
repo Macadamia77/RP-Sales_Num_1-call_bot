@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+httpx>=0.27
+python-multipart>=0.0.9
+pytest>=8
+
+# 선택 (필요할 때만 설치)
+# edge-tts          # TTS_PROVIDER=edge  (무료, 목소리 복제 없음)
+# anthropic         # LLM_PROVIDER=claude (유료)
