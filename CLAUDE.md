@@ -1,5 +1,5 @@
 # CLAUDE.md
 
-작업 규칙은 `AGENTS.md`와 같습니다. 시작 전에 `STATE.md`를 읽고, 마칠 때 `STATE.md`를 갱신하세요.
+프로젝트 설명과 규칙은 `AGENTS.md`에 있습니다 (Codex 등 다른 에이전트와 공유). 현황은 `STATE.md`, 반복 절차는 `.claude/skills/`.
 
 @AGENTS.md
