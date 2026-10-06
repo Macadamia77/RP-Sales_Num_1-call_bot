@@ -21,18 +21,20 @@
 | `CLAUDE.md` | Claude용 진입점. `AGENTS.md`를 불러옴 | 거의 없음 |
 | `STATE.md` | 현재 단계, 진행도, 진행 중 작업, 다음 할 일, 미결정 사항, 작업 내역 | 매 세션 |
 | `docs/spec.md` | 상세 명세: 통화 단계, 데이터 구조, API, 테스트 시나리오 정의, 마일스톤 완료 기준 | 설계가 바뀔 때 |
+| `docs/coding-guidelines.md` | 코딩 지침 (가정 확인, 단순하게, 필요한 곳만 수정, 검증 기준 먼저) | 드묾 |
 | `docs/design/ai-call-agent-guide.html` | 설계 원본 v1.0 (2026-09-28). 근거 확인용 | 고정 |
 | `.claude/skills/*/SKILL.md` | 반복 절차 (세션 마무리, 결정 기록 등) | 절차가 바뀔 때 |
 
 ## 작업 규칙
 
 1. **시작할 때** `git pull` 후 `STATE.md`를 읽는다. 구현 세부는 `docs/spec.md`를 본다.
-2. **마칠 때** `.claude/skills/handoff/SKILL.md` 절차대로 `STATE.md`를 갱신하고 커밋한다.
-3. **결정이 확정되면** `.claude/skills/record-decision/SKILL.md` 절차를 따른다.
-4. Codex 등 skill 기능이 없는 에이전트는 위 `SKILL.md` 파일을 그냥 읽고 그 절차를 따른다.
-5. 커밋 메시지 앞에 작업한 에이전트를 붙인다. 예: `[codex] ...`, `[claude-A] ...`, `[claude-B] ...`, `[human] ...`
-6. 아래 **불변 규칙**은 임의로 바꾸지 않는다. 바꿀 필요가 있으면 `STATE.md` 미결정 사항에 올리고 사람에게 확인받는다.
-7. 비밀키·실제 전화번호·녹음·대화록 원본은 커밋하지 않는다. 환경 변수는 `.env.example`에 키 이름만 둔다.
+2. **코드를 쓸 때** `docs/coding-guidelines.md`를 따른다. (Claude는 `CLAUDE.md`가 자동으로 불러옴)
+3. **마칠 때** `.claude/skills/handoff/SKILL.md` 절차대로 `STATE.md`를 갱신하고 커밋한다.
+4. **결정이 확정되면** `.claude/skills/record-decision/SKILL.md` 절차를 따른다.
+5. Codex 등 skill 기능이 없는 에이전트는 위 `SKILL.md` 파일을 그냥 읽고 그 절차를 따른다.
+6. 커밋 메시지 앞에 작업한 에이전트를 붙인다. 예: `[codex] ...`, `[claude-A] ...`, `[claude-B] ...`, `[human] ...`
+7. 아래 **불변 규칙**은 임의로 바꾸지 않는다. 바꿀 필요가 있으면 `STATE.md` 미결정 사항에 올리고 사람에게 확인받는다.
+8. 비밀키·실제 전화번호·녹음·대화록 원본은 커밋하지 않는다. 환경 변수는 `.env.example`에 키 이름만 둔다.
 
 ## 확정된 구조
 

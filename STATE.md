@@ -5,7 +5,7 @@
 
 | 항목 | 값 |
 |---|---|
-| 마지막 갱신 | 2026-10-02 |
+| 마지막 갱신 | 2026-10-06 |
 | 마지막 작업자 | claude (claude.ai/code) |
 | 작업 브랜치 | `claude/stoic-einstein-l70u1x` |
 | 현재 단계 | **M00 · 설계 완료, 코드 없음** |
@@ -69,6 +69,11 @@ _없음_ — 작업을 시작하면 여기에 `- <작업> · <에이전트> · <
 ## 작업 내역
 
 최신이 위. 형식은 `handoff` skill 참고.
+
+### 2026-10-06 · claude · `claude/stoic-einstein-l70u1x`
+- 한 일: 사용자 제공 코딩 지침을 `docs/coding-guidelines.md`로 추가. `CLAUDE.md`가 함께 불러오도록 import, `AGENTS.md`에도 안내 추가(Codex용).
+- 결정: 없음.
+- 다음: D1~D5 결정 또는 M02 착수.
 
 ### 2026-10-02 · claude · `claude/stoic-einstein-l70u1x`
 - 한 일: 문서를 역할별로 분리. `AGENTS.md`(설명·규칙), `docs/spec.md`(상세 명세), `STATE.md`(현황만), `.claude/skills/handoff`, `.claude/skills/record-decision`(반복 절차).
