@@ -71,7 +71,7 @@ _없음_ — 작업을 시작하면 여기에 `- <작업> · <에이전트> · <
 최신이 위. 형식은 `handoff` skill 참고.
 
 ### 2026-10-06 · claude · `claude/stoic-einstein-l70u1x`
-- 한 일: 사용자 제공 코딩 지침을 `docs/coding-guidelines.md`로 추가. `CLAUDE.md`가 함께 불러오도록 import, `AGENTS.md`에도 안내 추가(Codex용).
+- 한 일: 사용자 제공 코딩 지침을 `docs/coding-guidelines.md`로 추가. `CLAUDE.md`가 함께 불러오도록 import, `AGENTS.md`에도 안내 추가(Codex용). 지침 파일 제목을 `# coding-guidelines`로 변경. `main` 병합용 PR 생성.
 - 결정: 없음.
 - 다음: D1~D5 결정 또는 M02 착수.
 
